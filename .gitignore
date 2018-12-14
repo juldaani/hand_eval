@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+cardsTextFormat.npy
+ranks.npy
+cardsIntFormat.npy
+
 # C extensions
 *.so
 
