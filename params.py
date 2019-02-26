@@ -29,7 +29,10 @@ def getCardConversions():
     return cardToInt, intToCard
 
 ranks = np.load('/home/juho/dev_folder/hand_eval/LUT_ranks.npy')
+
 combs = np.array(list(itertools.combinations(np.arange(7), 5))).flatten()     # Five card combinations out of seven cards
+combs_numba = np.array(list(itertools.combinations(np.arange(7), 5)))
+
 cardToInt, intToCard = getCardConversions()
 
 LUT_nChooseK = np.zeros((52,5), dtype=np.int64)

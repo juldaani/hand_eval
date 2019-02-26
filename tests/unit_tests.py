@@ -10,7 +10,7 @@ import unittest
 import numpy as np
 from hand_eval.evaluator import evaluate
 from hand_eval.evaluator_numba import evaluate_numba
-from hand_eval.params import combs, ranks, LUT_nChooseK
+from hand_eval.params import combs, combs_numba, ranks, LUT_nChooseK
 
 class Tests(unittest.TestCase):
  
@@ -43,7 +43,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(trueRank, rank)
             self.assertTrue(np.all(trueBestHand == bestHand))
 
-            rank, bestHand = evaluate_numba(cards, combs, ranks, LUT_nChooseK)
+            rank, bestHand = evaluate_numba(cards, combs_numba, ranks, LUT_nChooseK)
             self.assertEqual(trueRank, rank)
             self.assertTrue(np.all(trueBestHand == bestHand))
             
