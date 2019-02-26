@@ -9,7 +9,8 @@ Created on Fri Dec 14 19:21:17 2018
 import unittest
 import numpy as np
 from hand_eval.evaluator import evaluate
-from hand_eval.params import combs
+from hand_eval.evaluator_numba import evaluate_numba
+from hand_eval.params import combs, ranks, LUT_nChooseK
 
 class Tests(unittest.TestCase):
  
@@ -39,9 +40,13 @@ class Tests(unittest.TestCase):
             trueBestHand = fiveCardHands[bestIdx]
             
             rank, bestHand = evaluate(cards)
-            
             self.assertEqual(trueRank, rank)
             self.assertTrue(np.all(trueBestHand == bestHand))
+
+            rank, bestHand = evaluate_numba(cards, combs, ranks, LUT_nChooseK)
+            self.assertEqual(trueRank, rank)
+            self.assertTrue(np.all(trueBestHand == bestHand))
+            
     
 
 if __name__ == '__main__':
