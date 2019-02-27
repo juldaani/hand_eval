@@ -9,8 +9,9 @@ Created on Fri Dec 14 19:21:17 2018
 import unittest
 import numpy as np
 from hand_eval.evaluator import evaluate
-from hand_eval.evaluator_numba import evaluate_numba
-from hand_eval.params import combs, combs_numba, ranks, LUT_nChooseK
+from hand_eval.evaluator_numba import evaluate_numba, evaluate_numba2
+from hand_eval.params import combs, combs_numba, ranks_7cards, LUT_nChooseK_7cards, \
+    ranks_5cards, LUT_nChooseK_5cards
 
 class Tests(unittest.TestCase):
  
@@ -21,7 +22,6 @@ class Tests(unittest.TestCase):
         for hand,rank in zip(self.hands,self.ranks):
             rankDict[tuple(hand)] = rank
         self.rankDict = rankDict
-#        pass
  
     def testAreRanksCorrect(self):
         
@@ -43,10 +43,14 @@ class Tests(unittest.TestCase):
             self.assertEqual(trueRank, rank)
             self.assertTrue(np.all(trueBestHand == bestHand))
 
-            rank, bestHand = evaluate_numba(cards, combs_numba, ranks, LUT_nChooseK)
+            rank, bestHand = evaluate_numba(cards, combs_numba, ranks_5cards, 
+                                            LUT_nChooseK_5cards)
             self.assertEqual(trueRank, rank)
             self.assertTrue(np.all(trueBestHand == bestHand))
             
+            rank = evaluate_numba2(cards, ranks_7cards, LUT_nChooseK_7cards, 
+                                   np.zeros(7, dtype=np.int64))
+            self.assertEqual(trueRank, rank)
     
 
 if __name__ == '__main__':

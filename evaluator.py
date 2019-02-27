@@ -8,7 +8,7 @@ Created on Fri Dec 14 18:08:48 2018
 
 import numpy as np
 import scipy.special
-from hand_eval.params import combs, ranks
+from hand_eval.params import combs, ranks_5cards
 
 
 
@@ -24,7 +24,7 @@ def evaluate(cards):
     fact = np.tile(np.arange(1, 5+1), (len(fiveCardHands), 1))
     inds = np.sum(scipy.special.comb(fiveCardHands, fact), axis=1).astype(np.int)
     
-    cardRanks = ranks[inds].astype(np.int)
+    cardRanks = ranks_5cards[inds].astype(np.int)
     
     bestIdx = np.argmin(cardRanks)
     bestHand = fiveCardHands[bestIdx]
