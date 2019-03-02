@@ -4,7 +4,11 @@
 Created on Fri Dec 14 19:21:17 2018
 
 @author: juho
+
+Unit tests for hand evaluators. Before running the tests, generate the test data
+with 'create_test_data.py'.
 """
+
 
 import unittest
 import numpy as np

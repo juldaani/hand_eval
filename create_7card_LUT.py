@@ -4,6 +4,11 @@
 Created on Wed Feb 27 11:14:36 2019
 
 @author: juho
+
+Create 7 card lookup table to be used with hand evaluator. To run this script, 
+the 'create_5cards_LUT.py' must be executed first because this script uses the 
+output from 'create_5cards_LUT.py'.
+
 """
 
 

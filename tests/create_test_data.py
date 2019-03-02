@@ -4,7 +4,13 @@
 Created on Fri Dec 14 19:00:25 2018
 
 @author: juho
+
+Create test data for hand evaluator unit tests. Deuces hand evaluator 
+(https://github.com/worldveil/deuces) and Python 2 is required to run this 
+script.
+
 """
+
 
 from deuces import Card
 from deuces import Evaluator
@@ -17,24 +23,12 @@ n = 52
 k = 5
 combs = np.array(list(itertools.combinations(np.arange(n), k)))     # all possible 5 card combinations
 
-#fact = np.tile(np.arange(1, k+1), (len(combs), 1))
-#inds = np.sum(scipy.special.comb(combs, fact), axis=1).astype(np.int)
-
-# %%
-
 evaluator = Evaluator()
 
-#ranks = np.zeros(len(combs))
-#for i in range(len(combs)):
 ranks = []
 cards = []
 for i,comb in enumerate(combs):
     if(i%10000==0): print(i)
-    #    comb = combs[i]
-#    idx = inds[i]
-
-#    print(intToCard[comb[4]])
-    
     cardsText = [intToCard[comb[0]], intToCard[comb[1]], intToCard[comb[2]],
              intToCard[comb[3]], intToCard[comb[4]]]
 
