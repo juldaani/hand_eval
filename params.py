@@ -9,6 +9,8 @@ Created on Fri Dec 14 18:08:06 2018
 import numpy as np
 import itertools
 import scipy.special
+import sys
+
 
 def getCardConversions():
     cardNums = 'A 2 3 4 5 6 7 8 9 T J Q K'
@@ -28,8 +30,16 @@ def getCardConversions():
 
     return cardToInt, intToCard
 
-ranks_5cards = np.load('/home/juho/dev_folder/hand_eval/LUT_ranks_5cards.npy')
-ranks_7cards = np.load('/home/juho/dev_folder/hand_eval/LUT_ranks_7cards.npy')
+
+try:
+    ranks_5cards = np.load('/home/juho/dev_folder/hand_eval/LUT_ranks_5cards.npy')
+    ranks_7cards = np.load('/home/juho/dev_folder/hand_eval/LUT_ranks_7cards.npy')
+except FileNotFoundError as err:
+    print('VIRHE! Cannot load lookup tables for hand evaluator. Run create_5card_LUT.py and \
+          create_7card_LUT.py before proceeding.\n')
+    print(err)
+    sys.exit()
+
 
 combs = np.array(list(itertools.combinations(np.arange(7), 5))).flatten()     # Five card combinations out of seven cards
 combs_numba = np.array(list(itertools.combinations(np.arange(7), 5)))
