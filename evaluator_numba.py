@@ -15,33 +15,32 @@ from numba import jit
 
 
 @jit(nopython=True, cache=True, fastmath=True, nogil=True)
-def sortCards(cards):
+def sortCards(c0,c1,c2,c3,c4,c5,c6):
     """
     Sort 7 card hand using sorting network.
     """
+    if(c1 > c2): c1, c2 = c2, c1
+    if(c3 > c4): c3, c4 = c4, c3
+    if(c5 > c6): c5, c6 = c6, c5
+    if(c0 > c2): c0, c2 = c2, c0
+    if(c3 > c5): c3, c5 = c5, c3
+    if(c4 > c6): c4, c6 = c6, c4
+    if(c0 > c1): c0, c1 = c1, c0
+    if(c4 > c5): c4, c5 = c5, c4
+    if(c2 > c6): c2, c6 = c6, c2
+    if(c0 > c4): c0, c4 = c4, c0
+    if(c1 > c5): c1, c5 = c5, c1
+    if(c0 > c3): c0, c3 = c3, c0
+    if(c2 > c5): c2, c5 = c5, c2
+    if(c1 > c3): c1, c3 = c3, c1
+    if(c2 > c4): c2, c4 = c4, c2
+    if(c2 > c3): c2, c3 = c3, c2
     
-    if(cards[1] > cards[2]): cards[1], cards[2] = cards[2], cards[1]
-    if(cards[3] > cards[4]): cards[3], cards[4] = cards[4], cards[3]
-    if(cards[5] > cards[6]): cards[5], cards[6] = cards[6], cards[5]
-    if(cards[0] > cards[2]): cards[0], cards[2] = cards[2], cards[0]
-    if(cards[3] > cards[5]): cards[3], cards[5] = cards[5], cards[3]
-    if(cards[4] > cards[6]): cards[4], cards[6] = cards[6], cards[4]
-    if(cards[0] > cards[1]): cards[0], cards[1] = cards[1], cards[0]
-    if(cards[4] > cards[5]): cards[4], cards[5] = cards[5], cards[4]
-    if(cards[2] > cards[6]): cards[2], cards[6] = cards[6], cards[2]
-    if(cards[0] > cards[4]): cards[0], cards[4] = cards[4], cards[0]
-    if(cards[1] > cards[5]): cards[1], cards[5] = cards[5], cards[1]
-    if(cards[0] > cards[3]): cards[0], cards[3] = cards[3], cards[0]
-    if(cards[2] > cards[5]): cards[2], cards[5] = cards[5], cards[2]
-    if(cards[1] > cards[3]): cards[1], cards[3] = cards[3], cards[1]
-    if(cards[2] > cards[4]): cards[2], cards[4] = cards[4], cards[2]
-    if(cards[2] > cards[3]): cards[2], cards[3] = cards[3], cards[2]
-    
-    return cards
+    return c0,c1,c2,c3,c4,c5,c6
 
 
 @jit(nopython=True, cache=True, fastmath=True, nogil=True)
-def evaluate_numba2(cards, ranks_7cards, LUT_nChooseK_7cards, tmp):
+def evaluate_numba2(cards, ranks_7cards, LUT_nChooseK_7cards):
     """
     Evaluate 7 card hands with direct lookup. Ranks for all 7 card combinations 
     are stored in one massive lookup table where lower rank means better hand. 
@@ -56,26 +55,21 @@ def evaluate_numba2(cards, ranks_7cards, LUT_nChooseK_7cards, tmp):
         https://drive.google.com/open?id=1sNcEmyEAqkMrR8fDS0tSkr2KFcgx8gKj
     LUT_nChooseK_7cards - Lookup table for computing index for the hand, see 
         'params.py'.
-    tmp -- Should be a following array: np.zeros(7, dtype=np.int64)
-           This is to prevent memory allocation if the evaluator is used inside
-           the loop.
     """
     
-    if(len(cards) < 7): return None
-    
-    cards = sortCards(cards)
+    c0,c1,c2,c3,c4,c5,c6 = sortCards(cards[0],cards[1],cards[2],cards[3],cards[4],
+                                         cards[5],cards[6])
 
-    tmp[0] = LUT_nChooseK_7cards[cards[0],0]
-    tmp[1] = LUT_nChooseK_7cards[cards[1],1]
-    tmp[2] = LUT_nChooseK_7cards[cards[2],2]
-    tmp[3] = LUT_nChooseK_7cards[cards[3],3]
-    tmp[4] = LUT_nChooseK_7cards[cards[4],4]
-    tmp[5] = LUT_nChooseK_7cards[cards[5],5]
-    tmp[6] = LUT_nChooseK_7cards[cards[6],6]
-    ind = tmp[0] + tmp[1] + tmp[2] + tmp[3] + tmp[4] + tmp[5] + tmp[6]
+    tmp0 = LUT_nChooseK_7cards[c0,0]
+    tmp1 = LUT_nChooseK_7cards[c1,1]
+    tmp2 = LUT_nChooseK_7cards[c2,2]
+    tmp3 = LUT_nChooseK_7cards[c3,3]
+    tmp4 = LUT_nChooseK_7cards[c4,4]
+    tmp5 = LUT_nChooseK_7cards[c5,5]
+    tmp6 = LUT_nChooseK_7cards[c6,6]
+    ind = tmp0 + tmp1 + tmp2 + tmp3 + tmp4 + tmp5 + tmp6
 
     return ranks_7cards[ind]
-
 
 
 @jit(nopython=True, cache=True, fastmath=True, nogil=True)
@@ -98,7 +92,8 @@ def evaluate_numba(cards, combs, ranks_5cards, LUT_nChooseK_5cards):
     if(len(cards) < 7): return None
     
     # Sorting the cards is mandatory for the algorithm to function properly
-    cards = sortCards(cards)
+    cards[0],cards[1],cards[2],cards[3],cards[4],cards[5],cards[6] = \
+        sortCards(cards[0],cards[1],cards[2],cards[3],cards[4],cards[5],cards[6])
     
     # 5 card combinations out of 7 cards
     fiveCardHands = np.zeros((21,5), dtype=np.int64)

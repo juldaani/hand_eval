@@ -57,5 +57,3 @@ LUT_nChooseK_7cards[:,6] = scipy.special.comb(np.arange(52), np.full(52,7)).asty
 
 
 
-
-

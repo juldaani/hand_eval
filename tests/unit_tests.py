@@ -52,8 +52,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(trueRank, rank)
             self.assertTrue(np.all(trueBestHand == bestHand))
             
-            rank = evaluate_numba2(cards, ranks_7cards, LUT_nChooseK_7cards, 
-                                   np.zeros(7, dtype=np.int64))
+            rank = evaluate_numba2(cards, ranks_7cards, LUT_nChooseK_7cards)
             self.assertEqual(trueRank, rank)
     
 
