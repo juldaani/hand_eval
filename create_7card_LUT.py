@@ -9,6 +9,8 @@ Create 7 card lookup table to be used with hand evaluator. To run this script,
 the 'create_5cards_LUT.py' must be executed first because this script uses the 
 output from 'create_5cards_LUT.py'.
 
+Lookup tables can also be downloaded from: https://drive.google.com/drive/folders/1sNcEmyEAqkMrR8fDS0tSkr2KFcgx8gKj
+
 """
 
 

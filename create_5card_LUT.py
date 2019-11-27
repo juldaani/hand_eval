@@ -9,6 +9,7 @@ Create 5 card lookup table to be used with hand evaluators. To run this script,
 Deuces hand evaluator (https://github.com/worldveil/deuces) and Python 2 are 
 required.
 
+Lookup tables can also be downloaded from: https://drive.google.com/drive/folders/1sNcEmyEAqkMrR8fDS0tSkr2KFcgx8gKj
 """
 
 from deuces import Evaluator, Card
